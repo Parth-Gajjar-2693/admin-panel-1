@@ -1,12 +1,21 @@
 import { NavLink } from "react-router-dom";
+import { useAppSelector } from "@/app/hooks";
 
-const menu = [
+const adminMenu = [
   { label: "Dashboard", path: "/dashboard" },
   { label: "Products", path: "/products" },
   { label: "Alerts", path: "/alerts" },
 ];
 
+const userMenu = [
+  { label: "Dashboard", path: "/dashboard" },
+];
+
 export default function Sidebar() {
+  const role = useAppSelector((s) => s.auth.role);
+
+  const menu = role === "ADMIN" ? adminMenu : userMenu;
+
   return (
     <aside className="w-sidebar bg-surface border-r px-4 py-6">
       <h1 className="text-lg font-semibold mb-6">Admin</h1>

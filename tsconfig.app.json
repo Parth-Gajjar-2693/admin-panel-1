@@ -4,19 +4,15 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
-
     "jsx": "react-jsx",
 
     "strict": true,
     "skipLibCheck": true,
-
-    "useDefineForClassFields": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true
-  },
-  "include": ["src"]
+"noUnusedLocals": true,
+"noUnusedParameters": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
 }
