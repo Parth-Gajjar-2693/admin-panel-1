@@ -19,6 +19,14 @@ export default function ProtectedRoute({
     return <Navigate to="/dashboard" replace />;
   }
 
+    if (allowedRoles && role && !allowedRoles.includes(role)) {
+    return <Navigate to="/products" replace />;
+  }
+
+    if (allowedRoles && role && !allowedRoles.includes(role)) {
+    return <Navigate to="/alerts" replace />;
+  }
+
   return <>{children}</>;
 }
 

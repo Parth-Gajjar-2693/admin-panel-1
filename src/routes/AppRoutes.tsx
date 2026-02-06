@@ -1,33 +1,16 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import MainLayout from "../components/layouts/MainLayout";
+import { Routes, Route } from "react-router-dom";
+import MainLayout from "@/components/layouts/MainLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import Login from "@/pages/Login";
+import Dashboard from "@/pages/Dashboard";
+import Products from "@/pages/Products";
+import Alerts from "@/pages/Alerts";
 
-function Dashboard() {
-  return <div>Dashboard page</div>;
-}
-function Products() {
-  return <div>Products list</div>;
-}
-function Alerts() {
-  return <div>Alerts list</div>;
-}
 
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <MainLayout>
-              <Navigate to="/dashboard" />
-            </MainLayout>
-          </ProtectedRoute>
-        }
-      />
 
       <Route
         path="/dashboard"
@@ -54,7 +37,7 @@ export default function AppRoutes() {
       <Route
         path="/alerts"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={["ADMIN"]}>
             <MainLayout>
               <Alerts />
             </MainLayout>

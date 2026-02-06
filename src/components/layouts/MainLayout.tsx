@@ -2,27 +2,21 @@ import { ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 
-type Props = {
-  children: ReactNode;
-  isLoading?: boolean;
-};
-
-export default function MainLayout({ children, isLoading }: Props) {
+export default function MainLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-bg text-text">
-      <Sidebar />
+    <div className="h-screen flex bg-bg">
+      {/* Sidebar */}
+      <aside className="sticky top-0 h-screen">
+        <Sidebar />
+      </aside>
 
-      <div className="flex flex-col flex-1">
+      {/* Main area */}
+      <div className="flex flex-1 flex-col overflow-hidden">
+        {/* Header */}
         <Header />
 
-        <main className="relative flex-1 p-6">
-          {/* Loader overlay */}
-          {isLoading && (
-            <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm">
-              <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-            </div>
-          )}
-
+        {/* Scrollable content */}
+        <main className="flex-1 overflow-y-auto p-6">
           {children}
         </main>
       </div>
