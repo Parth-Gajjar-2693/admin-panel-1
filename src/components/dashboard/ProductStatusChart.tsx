@@ -10,7 +10,7 @@ import { productStats } from "@/data/dashboard";
 
 export default function ProductStatusChart() {
   return (
-    <div className="bg-surface border rounded-xl p-6">
+    <div className="bg-green-50/40 border rounded-xl p-6">
       <h2 className="text-sm font-semibold text-text mb-4">
         Product Status
       </h2>

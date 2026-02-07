@@ -11,12 +11,8 @@ export default function Dashboard() {
     <div className="space-y-8">
       {/* Title */}
       <div>
-        <h1 className="text-xl font-semibold text-text">
-          Dashboard
-        </h1>
-        <p className="text-sm text-muted">
-          System analytics overview
-        </p>
+        <h1 className="text-xl font-semibold text-text">Dashboard</h1>
+        <p className="text-sm text-muted">System analytics overview</p>
       </div>
 
       {/* KPI Cards */}
@@ -26,6 +22,7 @@ export default function Dashboard() {
           value={128}
           subtitle="Active accounts"
           icon={<Users size={22} />}
+          variant="blue"
         />
 
         {role === "ADMIN" && (
@@ -35,6 +32,7 @@ export default function Dashboard() {
               value={42}
               subtitle="Listed products"
               icon={<Package size={22} />}
+              variant="green"
             />
 
             <StatCard
@@ -42,6 +40,7 @@ export default function Dashboard() {
               value={7}
               subtitle="Needs attention"
               icon={<Bell size={22} />}
+              variant="amber"
             />
           </>
         )}
@@ -51,6 +50,7 @@ export default function Dashboard() {
           value={role ?? "-"}
           subtitle="Access level"
           icon={<Shield size={22} />}
+          variant="slate"
         />
       </div>
 
