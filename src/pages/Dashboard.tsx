@@ -1,20 +1,25 @@
 import { Users, Package, Bell, Shield } from "lucide-react";
 import { useAppSelector } from "@/app/hooks";
 import StatCard from "@/components/dashboard/StatCard";
-import EmptyState from "@/components/dashboard/EmptyState";
-import { BarChart3 } from "lucide-react";
+import UserGrowthChart from "@/components/dashboard/UserGrowthChart";
+import ProductStatusChart from "@/components/dashboard/ProductStatusChart";
 
 export default function Dashboard() {
   const role = useAppSelector((s) => s.auth.role);
 
   return (
-    <div className="space-y-6">
-      {/* Page title */}
+    <div className="space-y-8">
+      {/* Title */}
       <div>
-        <h1 className="text-xl font-semibold text-text">Dashboard</h1>
-        <p className="text-sm text-muted">Overview of system activity</p>
+        <h1 className="text-xl font-semibold text-text">
+          Dashboard
+        </h1>
+        <p className="text-sm text-muted">
+          System analytics overview
+        </p>
       </div>
-      {/* Stats grid */}
+
+      {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title="Total Users"
@@ -48,18 +53,13 @@ export default function Dashboard() {
           icon={<Shield size={22} />}
         />
       </div>
-      <div className="bg-surface border rounded-xl p-6">
-        <EmptyState
-          icon={<BarChart3 size={32} />}
-          title="No analytics available"
-          description="Charts and insights will appear once data is available."
-        />
-      </div>
-      {/* Placeholder section */}
-      <div className="bg-surface border rounded-xl p-6">
-        <p className="text-sm text-muted">
-          Charts and analytics will appear here.
-        </p>
+
+      {/* Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <UserGrowthChart />
+        </div>
+        <ProductStatusChart />
       </div>
     </div>
   );
