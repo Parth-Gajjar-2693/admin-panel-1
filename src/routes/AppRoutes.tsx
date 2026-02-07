@@ -6,10 +6,11 @@ import Dashboard from "@/pages/Dashboard";
 import Products from "@/pages/Products";
 import Alerts from "@/pages/Alerts";
 
-
 export default function AppRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/login" element={<Login />} />
 
       <Route
