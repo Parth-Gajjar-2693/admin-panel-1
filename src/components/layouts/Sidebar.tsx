@@ -98,7 +98,7 @@ export default function Sidebar() {
 
       {/* Footer */}
       {!collapsed && (
-        <div className="px-6 py-4 border-t text-xs text-muted">
+        <div className="px-6 py-2 border-t text-xs text-muted">
           <div>Role: {role}</div>
           <div>v1.0.0</div>
         </div>

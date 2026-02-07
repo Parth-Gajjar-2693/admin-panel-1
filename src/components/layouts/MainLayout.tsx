@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import Footer from "./Footer";
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   return (
@@ -19,6 +20,9 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         <main className="flex-1 overflow-y-auto p-6">
           {children}
         </main>
+
+        {/* Footer */}
+        <Footer />
       </div>
     </div>
   );
