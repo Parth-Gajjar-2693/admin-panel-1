@@ -132,7 +132,7 @@ export default function Products() {
     {
       header: "Actions",
       accessor: "id",
-      alignRight: true,
+      alignRight: false,
       render: (row) => (
         <RowActions
           onEdit={() => handleEdit(row.id)}
