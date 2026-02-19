@@ -5,20 +5,22 @@ import Footer from "./Footer";
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="h-screen flex bg-bg">
+    <div className="min-h-screen flex bg-slate-50">
       {/* Sidebar */}
       <aside className="sticky top-0 h-screen">
         <Sidebar />
       </aside>
 
       {/* Main area */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col">
         {/* Header */}
         <Header />
 
         {/* Scrollable content */}
         <main className="flex-1 overflow-y-auto p-6">
-          {children}
+          <div className="max-w-7xl mx-auto">
+            {children}
+          </div>
         </main>
 
         {/* Footer */}

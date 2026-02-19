@@ -52,7 +52,7 @@ export default function DataTable<T extends { id: number }>({
 
   const paginatedData = sortedData.slice(
     (currentPage - 1) * rowsPerPage,
-    currentPage * rowsPerPage
+    currentPage * rowsPerPage,
   );
 
   // Smart page range (max 5 buttons)
@@ -73,17 +73,17 @@ export default function DataTable<T extends { id: number }>({
 
     return pages;
   };
-
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <div className="overflow-x-auto">
+    <div className="rounded-2xl bg-white shadow-md border border-slate-200">
+      <div className="overflow-x-auto rounded-2xl">
         <table className="w-full text-sm">
-          <thead className="bg-slate-50">
+          {/* Header */}
+          <thead className="bg-white border-b border-slate-200">
             <tr>
               {columns.map((col) => (
                 <th
                   key={String(col.accessor)}
-                  className={`px-6 py-4 text-slate-600 font-medium ${
+                  className={`px-6 py-4 text-slate-800 font-semibold tracking-tight ${
                     col.alignRight ? "text-right" : "text-left"
                   } ${col.sortable ? "cursor-pointer select-none" : ""}`}
                   onClick={() => col.sortable && handleSort(col.accessor)}
@@ -103,16 +103,22 @@ export default function DataTable<T extends { id: number }>({
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-slate-100">
-            {paginatedData.map((row) => (
+          {/* Body */}
+          <tbody>
+            {paginatedData.map((row, index) => (
               <tr
                 key={row.id}
-                className="transition-colors hover:bg-slate-50"
+                className={`
+        border-b border-slate-100
+        transition-all duration-150
+        ${index % 2 === 0 ? "bg-white" : "bg-slate-50/90"}
+        hover:bg-blue-50
+      `}
               >
                 {columns.map((col) => (
                   <td
                     key={String(col.accessor)}
-                    className={`px-6 py-4 ${
+                    className={`px-6 py-2 text-slate-700 ${
                       col.alignRight ? "text-right" : ""
                     }`}
                   >
@@ -138,8 +144,9 @@ export default function DataTable<T extends { id: number }>({
         </table>
       </div>
 
+      {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-4 border-t bg-slate-50">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-4 border-t border-slate-200 bg-white">
           <span className="text-xs text-slate-500">
             Showing {(currentPage - 1) * rowsPerPage + 1}–
             {Math.min(currentPage * rowsPerPage, sortedData.length)} of{" "}
@@ -147,7 +154,6 @@ export default function DataTable<T extends { id: number }>({
           </span>
 
           <div className="flex items-center gap-1">
-            {/* Prev */}
             <button
               disabled={currentPage === 1}
               onClick={() => setCurrentPage((p) => p - 1)}
@@ -156,14 +162,13 @@ export default function DataTable<T extends { id: number }>({
               Prev
             </button>
 
-            {/* Page Numbers */}
             {getPageNumbers().map((page) => (
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
                 className={`px-3 py-1.5 text-xs rounded-md transition ${
                   page === currentPage
-                    ? "bg-blue-600 text-white"
+                    ? "bg-blue-600 text-white shadow-sm"
                     : "border border-slate-200 hover:bg-slate-100"
                 }`}
               >
@@ -171,7 +176,6 @@ export default function DataTable<T extends { id: number }>({
               </button>
             ))}
 
-            {/* Next */}
             <button
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage((p) => p + 1)}
