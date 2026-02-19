@@ -6,6 +6,8 @@ import RowActions from "@/components/products/RowActions";
 import Modal from "@/components/common/Modal";
 import Toast from "@/components/common/Toast";
 import DataTable, { Column } from "@/components/common/DataTable";
+import { ChevronDown } from "lucide-react";
+import ProductForm from "@/forms/ProductForm.tsx";
 
 export default function Products() {
   const [search, setSearch] = useState("");
@@ -24,6 +26,14 @@ export default function Products() {
     "ALL" | "ACTIVE" | "INACTIVE"
   >("ALL");
   const [categoryFilter, setCategoryFilter] = useState<string>("ALL");
+  const [editOpen, setEditOpen] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
+  const [addForm, setAddForm] = useState({
+    name: "",
+    category: "",
+    price: "",
+    status: "ACTIVE" as "ACTIVE" | "INACTIVE",
+  });
 
   const categories = Array.from(new Set(products.map((p) => p.category)));
 
@@ -75,6 +85,11 @@ export default function Products() {
     setDeleteId(null);
     setToastMessage("Product deleted successfully");
   };
+
+  const selectedProduct =
+    editProductId !== null
+      ? (products.find((p) => p.id === editProductId) ?? null)
+      : null;
 
   const columns: Column<Product>[] = [
     {
@@ -139,7 +154,10 @@ export default function Products() {
             </p>
           </div>
 
-          <button className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition">
+          <button
+            onClick={() => setAddOpen(true)}
+            className="flex items-center gap-2 cursor-pointer rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition"
+          >
             <Plus size={16} />
             Add Product
           </button>
@@ -161,29 +179,43 @@ export default function Products() {
           </div>
 
           {/* Status Filter */}
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as any)}
-            className="rounded-md border bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="ALL">All Status</option>
-            <option value="ACTIVE">Active</option>
-            <option value="INACTIVE">Inactive</option>
-          </select>
+          <div className="relative inline-block">
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as any)}
+              className="appearance-none rounded-lg border cursor-pointer bg-white px-3 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="ALL">All Status</option>
+              <option value="ACTIVE">Active</option>
+              <option value="INACTIVE">Inactive</option>
+            </select>
+
+            <ChevronDown
+              size={16}
+              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+            />
+          </div>
 
           {/* Category Filter */}
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="rounded-md border bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="ALL">All Categories</option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
+          <div className="relative inline-block">
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="appearance-none rounded-lg border cursor-pointer bg-white px-3 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="ALL">All Categories</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+
+            <ChevronDown
+              size={16}
+              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+            />
+          </div>
         </div>
 
         <DataTable data={filteredProducts} columns={columns} />
@@ -214,77 +246,44 @@ export default function Products() {
           </button>
         </div>
       </Modal>
+
+      {/* Edit Modal */}
       <Modal
         open={editProductId !== null}
         title="Edit Product"
         onClose={() => setEditProductId(null)}
       >
-        {editProductId !== null && (
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium">Name</label>
-              <input
-                value={editForm.name}
-                onChange={(e) =>
-                  setEditForm((prev) => ({
-                    ...prev,
-                    name: e.target.value,
-                  }))
-                }
-                className="w-full mt-1 border rounded-md px-3 py-2 text-sm"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium">Price</label>
-              <input
-                type="number"
-                value={editForm.price}
-                onChange={(e) =>
-                  setEditForm((prev) => ({
-                    ...prev,
-                    price: e.target.value,
-                  }))
-                }
-                className="w-full mt-1 border rounded-md px-3 py-2 text-sm"
-              />
-            </div>
-
-            <div className="flex justify-end gap-3 pt-4">
-              <button
-                onClick={() => setEditProductId(null)}
-                className="px-4 py-2 text-sm rounded-md border cursor-pointer"
-              >
-                Cancel
-              </button>
-
-              <button
-                onClick={() => {
-                  if (editProductId === null) return;
-
-                  setProducts((prev) =>
-                    prev.map((p) =>
-                      p.id === editProductId
-                        ? {
-                            ...p,
-                            name: editForm.name,
-                            price: Number(editForm.price),
-                          }
-                        : p,
-                    ),
-                  );
-
-                  setEditProductId(null);
-                  setToastMessage("Product updated successfully");
-                }}
-                className="px-4 py-2 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
-              >
-                Save Changes
-              </button>
-            </div>
-          </div>
-        )}
+        <ProductForm
+          initialData={selectedProduct}
+          onCancel={() => setEditProductId(null)}
+          onSubmit={(updatedProduct) => {
+            setProducts((prev) =>
+              prev.map((p) =>
+                p.id === updatedProduct.id ? updatedProduct : p,
+              ),
+            );
+            setEditProductId(null);
+            setToastMessage("Product updated successfully");
+          }}
+        />
       </Modal>
+
+      {/* Add Product Modal */}
+      <Modal
+        open={addOpen}
+        title="Add Product"
+        onClose={() => setAddOpen(false)}
+      >
+        <ProductForm
+          onCancel={() => setAddOpen(false)}
+          onSubmit={(product) => {
+            setProducts((prev) => [product, ...prev]);
+            setAddOpen(false);
+            setToastMessage("Product added successfully");
+          }}
+        />
+      </Modal>
+
       {toastMessage && (
         <Toast message={toastMessage} onClose={() => setToastMessage(null)} />
       )}
